@@ -63,8 +63,7 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
   const t = calculateSunPosition();
 
   // Bezier curve calculation for sun position (more natural arc)
-  // const x = (1 - t) * (1 - t) * 30 + 2 * (1 - t) * t * 140 + t * t * 250;
-  const x = (1 - t) * (1 - t) * 40 + 2 * (1 - t) * t * 140 + t * t * 240;
+  const x = (1 - t) * (1 - t) * 30 + 2 * (1 - t) * t * 140 + t * t * 250;
   const y = (1 - t) * (1 - t) * 110 + 2 * (1 - t) * t * 10 + t * t * 110;
 
   // Determine if it's day or night for different styling
@@ -90,7 +89,6 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
         style={{ position: 'absolute', top: 0, left: 0 }}
       >
         <defs>
-          {/* Enhanced gradients that work better with blue-purple background */}
           <linearGradient id='sunGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
             <stop offset='0%' stopColor='rgba(255, 204, 51, 0.8)' />
             <stop offset='25%' stopColor='#ffcc33' />
