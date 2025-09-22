@@ -12,7 +12,6 @@ import WindStatus from '../components/WindStatus';
 import UVindex from '../components/UVindex';
 import SunsetAndSunrise from '../components/SunsetAndSunrise';
 import Humidity from '../components/Humidity';
-import Visisbility from '../components/Visibility';
 import FeelLike from '../components/FeelLike';
 import WeatherMap from '../components/WeatherMap';
 import WeeklyForecast from '../components/WeeklyForecast';
@@ -26,6 +25,7 @@ import {
 } from '../utils/styles';
 import { useState } from 'react';
 import WeatherCard from '../components/WeatherCard';
+import Visibility from '../components/Visibility';
 
 export default function Home() {
   //state
@@ -75,7 +75,7 @@ export default function Home() {
           </Flex>
           <Flex gap={6} direction={{ base: 'column', md: 'row' }}>
             {current && <Humidity data={current} />}
-            {current && <Visisbility data={current} />}
+            {current && <Visibility data={current} />}
             {current && <FeelLike data={current} />}
           </Flex>
         </SimpleGrid>
