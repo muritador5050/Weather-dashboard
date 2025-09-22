@@ -12,7 +12,7 @@ import WindStatus from '../components/WindStatus';
 import UVindex from '../components/UVindex';
 import SunsetAndSunrise from '../components/SunsetAndSunrise';
 import Humidity from '../components/Humidity';
-import Visisbility from '../components/Visisbility';
+import Visisbility from '../components/Visibility';
 import FeelLike from '../components/FeelLike';
 import WeatherMap from '../components/WeatherMap';
 import WeeklyForecast from '../components/WeeklyForecast';

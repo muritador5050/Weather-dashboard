@@ -8,7 +8,8 @@ export const MAP_BASE = 'https://api.openweathermap.org/maps/1.0';
 async function fetchJSON<T>(url: string): Promise<T> {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`API error: ${res.status} ${res.statusText}`);
-  return res.json();
+  const data = await res.json();
+  return data;
 }
 
 // Current Weather APIs

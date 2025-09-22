@@ -63,7 +63,8 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
   const t = calculateSunPosition();
 
   // Bezier curve calculation for sun position (more natural arc)
-  const x = (1 - t) * (1 - t) * 30 + 2 * (1 - t) * t * 140 + t * t * 250;
+  // const x = (1 - t) * (1 - t) * 30 + 2 * (1 - t) * t * 140 + t * t * 250;
+  const x = (1 - t) * (1 - t) * 40 + 2 * (1 - t) * t * 140 + t * t * 240;
   const y = (1 - t) * (1 - t) * 110 + 2 * (1 - t) * t * 10 + t * t * 110;
 
   // Determine if it's day or night for different styling

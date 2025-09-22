@@ -13,7 +13,7 @@ export default function App() {
         p={6}
         direction={{ base: 'column', md: 'row' }}
         gap={6}
-        h='100%'
+        minH='100vh'
       >
         <Header />
 
