@@ -62,9 +62,6 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
 
   const t = calculateSunPosition();
 
-  // const x = (1 - t) * (1 - t) * 30 + 2 * (1 - t) * t * 140 + t * t * 250;
-  // const y = (1 - t) * (1 - t) * 110 + 2 * (1 - t) * t * 10 + t * t * 110;
-
   const angle = Math.PI * t;
   const centerX = 140;
   const centerY = 110;
@@ -87,6 +84,7 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
       alignItems='flex-end'
       justifyContent='center'
       mx='auto'
+      overflow='hidden'
     >
       {/* Arc Path */}
       <svg
