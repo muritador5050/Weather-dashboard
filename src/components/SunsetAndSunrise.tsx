@@ -18,6 +18,7 @@ export default function SunsetAndSunrise({ data }: CurrentWeatherProps) {
       p={padding}
       borderRadius={borderRadius}
       bgGradient={childGradient}
+      overflow='hidden'
     >
       <Text {...componentTextStyles.cardTitle}>Sunset & Sunrise</Text>
 

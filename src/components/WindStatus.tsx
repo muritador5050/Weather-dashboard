@@ -53,9 +53,11 @@ export default function WindStatus({ data }: CurrentWeatherProps) {
       variant='gradient'
     >
       <CardBody p={padding}>
-        <Stack spacing={5}>
+        <Stack spacing={3}>
           <Text {...componentTextStyles.cardTitle}>Wind Status</Text>
-
+          <Text color={componentTextStyles.cardDescription.color}>
+            Directon:
+          </Text>
           {/* Tiny Line Chart for Wind Direction - On Top */}
           <ResponsiveContainer width='100%' height={80}>
             <LineChart
@@ -84,15 +86,16 @@ export default function WindStatus({ data }: CurrentWeatherProps) {
           </ResponsiveContainer>
 
           {/* Bar Chart for Wind Speed - Below */}
+          <Text color={componentTextStyles.cardDescription.color}>Speed:</Text>
           <ResponsiveContainer width='100%' height={120}>
             <BarChart
               data={windChartData}
-              margin={{
-                top: 5,
-                right: 20,
-                bottom: 5,
-                left: 20,
-              }}
+              // margin={{
+              //   top: 2,
+              //   right: 20,
+              //   bottom: 5,
+              //   left: 20,
+              // }}
             >
               <XAxis dataKey='name' tick={{ fill: 'white', fontSize: 12 }} />
               <Bar dataKey='speed' fill='#ffffff' opacity={0.8} />
