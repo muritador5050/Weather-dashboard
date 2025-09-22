@@ -1,30 +1,39 @@
-import { Box, VStack, Flex, Icon, Text } from '@chakra-ui/react';
-import { padding, borderRadius, childGradient } from '../utils/styles';
+import { Card, CardBody, VStack, Flex, Icon, Text } from '@chakra-ui/react';
+import {
+  padding,
+  borderRadius,
+  childGradient,
+  componentTextStyles,
+} from '../utils/styles';
 import type { CurrentWeatherProps } from '../types/Weather';
 import { Eye } from 'lucide-react';
 
-export default function Visisbility({ data }: CurrentWeatherProps) {
+export default function Visibility({ data }: CurrentWeatherProps) {
   return (
-    <Box
+    <Card
       flex={1}
       minH={{ base: 'max-content', md: '80px' }}
-      p={padding}
       borderRadius={borderRadius}
       bgGradient={childGradient}
+      variant='gradient'
     >
-      <Flex justify='space-between' align='center'>
-        <VStack spacing={6}>
-          <Text> Visibility</Text>
-          <Text fontWeight='bold'>{data?.visibility}km</Text>
-        </VStack>
+      <CardBody p={padding}>
+        <Flex justify='space-between' align='center'>
+          <VStack spacing={6} align='flex-start'>
+            <Text {...componentTextStyles.cardTitle}>Visibility</Text>
+            <Text {...componentTextStyles.cardValue}>{data.visibility}km</Text>
+          </VStack>
 
-        <VStack spacing={6}>
-          <Icon as={Eye} color='white' />
-          <Text maxW='sm' fontSize='sm'>
-            {data.visibility > 8000 ? 'Crystal clear view' : 'Hazy conditions'}
-          </Text>
-        </VStack>
-      </Flex>
-    </Box>
+          <VStack spacing={6} align='flex-end'>
+            <Icon as={Eye} color='white' boxSize={6} />
+            <Text {...componentTextStyles.cardDescription}>
+              {data.visibility > 8000
+                ? 'Crystal clear view'
+                : 'Hazy conditions'}
+            </Text>
+          </VStack>
+        </Flex>
+      </CardBody>
+    </Card>
   );
 }

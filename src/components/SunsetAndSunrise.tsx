@@ -1,5 +1,10 @@
 import { Box, Flex, Stack, Text } from '@chakra-ui/react';
-import { borderRadius, childGradient, padding } from '../utils/styles';
+import {
+  borderRadius,
+  childGradient,
+  padding,
+  componentTextStyles,
+} from '../utils/styles';
 import type { CurrentWeatherProps } from '../types/Weather';
 import { formatTime } from '../utils/helpers';
 import SunriseToSunsetArc from '../utils/SunriseToSunsetArc';
@@ -14,7 +19,7 @@ export default function SunsetAndSunrise({ data }: CurrentWeatherProps) {
       borderRadius={borderRadius}
       bgGradient={childGradient}
     >
-      <Text textAlign='start'>Sunset & Sunrise</Text>
+      <Text {...componentTextStyles.cardTitle}>Sunset & Sunrise</Text>
 
       <Box>
         <SunriseToSunsetArc
@@ -28,21 +33,21 @@ export default function SunsetAndSunrise({ data }: CurrentWeatherProps) {
         mt={6}
         pt={4}
         borderTopWidth={1}
-        borderColor='gray.100'
+        borderColor='whiteAlpha.300'
       >
         <Box>
-          <Text fontSize='sm' color='yellow.500'>
+          <Text fontSize='sm' color='yellow.100'>
             Sunrise
           </Text>
-          <Text fontWeight='medium'>
+          <Text fontWeight='bold' color='white'>
             {formatTime(data?.sys.sunrise, data?.timezone)}AM
           </Text>
         </Box>
         <Box>
-          <Text fontSize='sm' color='yellow.500'>
+          <Text fontSize='sm' color='yellow.100'>
             Sunset
           </Text>
-          <Text fontWeight='medium'>
+          <Text fontWeight='bold' color='white'>
             {formatTime(data?.sys.sunset, data?.timezone)}PM
           </Text>
         </Box>

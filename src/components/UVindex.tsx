@@ -1,6 +1,11 @@
 import { Box, Flex, Stack, Text } from '@chakra-ui/react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import { borderRadius, childGradient, padding } from '../utils/styles';
+import {
+  borderRadius,
+  childGradient,
+  padding,
+  componentTextStyles,
+} from '../utils/styles';
 
 export interface UVIndexResponse {
   lat?: number;
@@ -48,8 +53,8 @@ export default function UVindex({ value }: UVIndexResponse) {
       bgGradient={childGradient}
     >
       <Flex justify='space-between'>
-        <Text textAlign='start'>UV Index</Text>
-        <Text fontSize='sm' color='yellow.400'>
+        <Text {...componentTextStyles.cardTitle}>UV Index</Text>
+        <Text fontSize='sm' color='yellow.100' fontWeight='medium'>
           {getUVDescription(uvValue)}
         </Text>
       </Flex>
@@ -68,12 +73,12 @@ export default function UVindex({ value }: UVIndexResponse) {
               dataKey='value'
             >
               <Cell fill={getUVColor(uvValue)} />
-              <Cell fill='#2D3748' fillOpacity={0.3} />
+              <Cell fill='white' fillOpacity={0.2} />
             </Pie>
           </PieChart>
         </ResponsiveContainer>
       </Box>
-      <Text fontSize='xl' textAlign='center' fontWeight='semibold'>
+      <Text fontSize='xl' textAlign='center' fontWeight='bold' color='white'>
         {uvValue}UV
       </Text>
     </Stack>

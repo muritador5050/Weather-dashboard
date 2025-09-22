@@ -1,5 +1,10 @@
-import { Flex, Stack, Text } from '@chakra-ui/react';
-import { borderRadius, childGradient, padding } from '../utils/styles';
+import { Card, CardBody, Flex, Stack, Text } from '@chakra-ui/react';
+import {
+  borderRadius,
+  childGradient,
+  padding,
+  componentTextStyles,
+} from '../utils/styles';
 import type { CurrentWeatherProps } from '../types/Weather';
 import { getCurrentTime } from '../utils/helpers';
 import {
@@ -40,63 +45,73 @@ export default function WindStatus({ data }: CurrentWeatherProps) {
   ];
 
   return (
-    <Stack
-      spacing={5}
+    <Card
       flex={1}
       minH={{ base: 'max-content', md: '250px' }}
-      p={padding}
       borderRadius={borderRadius}
       bgGradient={childGradient}
+      variant='gradient'
     >
-      <Text textAlign='start'>Wind Status</Text>
+      <CardBody p={padding}>
+        <Stack spacing={5}>
+          <Text {...componentTextStyles.cardTitle}>Wind Status</Text>
 
-      {/* Tiny Line Chart for Wind Direction - On Top */}
-      <ResponsiveContainer width='100%' height={80}>
-        <LineChart
-          data={windChartData}
-          margin={{
-            top: 5,
-            right: 20,
-            bottom: 5,
-            left: 20,
-          }}
-        >
-          <XAxis dataKey='name' axisLine={false} tickLine={false} />
-          <Line
-            type='monotone'
-            dataKey='direction'
-            stroke='#fc7d15ff'
-            strokeWidth={2}
-            dot={{ r: 3 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+          {/* Tiny Line Chart for Wind Direction - On Top */}
+          <ResponsiveContainer width='100%' height={80}>
+            <LineChart
+              data={windChartData}
+              margin={{
+                top: 5,
+                right: 20,
+                bottom: 5,
+                left: 20,
+              }}
+            >
+              <XAxis
+                dataKey='name'
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: 'white', fontSize: 12 }}
+              />
+              <Line
+                type='monotone'
+                dataKey='direction'
+                stroke='#fc7d15ff'
+                strokeWidth={2}
+                dot={{ r: 3 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
 
-      {/* Bar Chart for Wind Speed - Below */}
-      <ResponsiveContainer width='100%' height={120}>
-        <BarChart
-          data={windChartData}
-          margin={{
-            top: 5,
-            right: 20,
-            bottom: 5,
-            left: 20,
-          }}
-        >
-          <XAxis dataKey='name' />
-          <Bar dataKey='speed' fill='#1710daff' />
-        </BarChart>
-      </ResponsiveContainer>
+          {/* Bar Chart for Wind Speed - Below */}
+          <ResponsiveContainer width='100%' height={120}>
+            <BarChart
+              data={windChartData}
+              margin={{
+                top: 5,
+                right: 20,
+                bottom: 5,
+                left: 20,
+              }}
+            >
+              <XAxis dataKey='name' tick={{ fill: 'white', fontSize: 12 }} />
+              <Bar dataKey='speed' fill='#ffffff' opacity={0.8} />
+            </BarChart>
+          </ResponsiveContainer>
 
-      <Flex justify='space-between' align='center'>
-        <Text>
-          <Text as='span' fontSize='3xl'>
-            {data.wind.speed}
-          </Text>
-          km/h
-        </Text>
-        <Text>{getCurrentTime()}</Text>
-      </Flex>
-    </Stack>
+          <Flex justify='space-between' align='center'>
+            <Text color='white'>
+              <Text as='span' fontSize='3xl' color='white' fontWeight='bold'>
+                {data.wind.speed}
+              </Text>
+              km/h
+            </Text>
+            <Text color='gray.100' fontSize='sm'>
+              {getCurrentTime()}
+            </Text>
+          </Flex>
+        </Stack>
+      </CardBody>
+    </Card>
   );
 }

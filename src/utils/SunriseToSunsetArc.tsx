@@ -17,34 +17,36 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
     size?: string;
   }
 
-  const SunIcon: React.FC<SunIconProps> = ({ position, size = '16px' }) => (
+  const SunIcon: React.FC<SunIconProps> = ({ position, size = '20px' }) => (
     <Box
       position='absolute'
       w={size}
       h={size}
       bg='radial-gradient(circle, #ffd54f 0%, #ffb74d 70%, #ff9800 100%)'
       borderRadius='full'
-      boxShadow='0 0 15px rgba(255, 193, 7, 0.5)'
+      boxShadow='0 0 20px rgba(255, 215, 79, 0.8), 0 0 40px rgba(255, 183, 77, 0.4)'
       transform='translate(-50%, -50%)'
-      transition='all 0.3s ease'
+      transition='all 0.5s ease-out'
+      zIndex={10}
       {...position}
     />
   );
 
   // Calculate current sun position
   const calculateSunPosition = () => {
-    const now = Math.floor(Date.now() / 1000) + timezone;
+    const now = Math.floor(Date.now() / 1000);
+    const adjustedNow = now + timezone;
     const sunriseTime = sunrise + timezone;
     const sunsetTime = sunset + timezone;
 
     let t = 0.5; // Default to noon position
 
-    if (now >= sunriseTime && now <= sunsetTime) {
+    if (adjustedNow >= sunriseTime && adjustedNow <= sunsetTime) {
       // Sun is up - calculate position between sunrise and sunset
       const dayDuration = sunsetTime - sunriseTime;
-      const currentProgress = now - sunriseTime;
+      const currentProgress = adjustedNow - sunriseTime;
       t = currentProgress / dayDuration;
-    } else if (now < sunriseTime) {
+    } else if (adjustedNow < sunriseTime) {
       // Before sunrise - sun at start position
       t = 0;
     } else {
@@ -60,75 +62,145 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
 
   const t = calculateSunPosition();
 
-  // Bezier curve calculation for sun position
-  const x = (1 - t) * (1 - t) * 20 + 2 * (1 - t) * t * 140 + t * t * 260;
-  const y = (1 - t) * (1 - t) * 120 + 2 * (1 - t) * t * 0 + t * t * 120;
+  // Bezier curve calculation for sun position (more natural arc)
+  const x = (1 - t) * (1 - t) * 30 + 2 * (1 - t) * t * 140 + t * t * 250;
+  const y = (1 - t) * (1 - t) * 110 + 2 * (1 - t) * t * 10 + t * t * 110;
 
   // Determine if it's day or night for different styling
   const isDaytime = t > 0 && t < 1;
+  const isNight = t === 0 || t === 1;
 
   return (
     <Box
       position='relative'
       h='120px'
-      w='250px'
+      w='100%'
+      maxW='280px'
       display='flex'
       alignItems='flex-end'
       justifyContent='center'
+      mx='auto'
     >
       {/* Arc Path */}
       <svg
-        width='280'
+        width='100%'
         height='120'
         viewBox='0 0 280 120'
         style={{ position: 'absolute', top: 0, left: 0 }}
       >
         <defs>
+          {/* Enhanced gradients that work better with blue-purple background */}
           <linearGradient id='sunGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-            <stop offset='0%' stopColor='rgba(255, 204, 51, 0.3)' />
+            <stop offset='0%' stopColor='rgba(255, 204, 51, 0.8)' />
             <stop offset='25%' stopColor='#ffcc33' />
             <stop offset='50%' stopColor='#fff176' />
             <stop offset='75%' stopColor='#ffcc33' />
-            <stop offset='100%' stopColor='#ff6b35' />
+            <stop offset='100%' stopColor='rgba(255, 107, 53, 0.8)' />
           </linearGradient>
+
+          <linearGradient
+            id='dayBackgroundGradient'
+            x1='0%'
+            y1='0%'
+            x2='100%'
+            y2='0%'
+          >
+            <stop offset='0%' stopColor='rgba(255, 255, 255, 0.15)' />
+            <stop offset='50%' stopColor='rgba(255, 255, 255, 0.25)' />
+            <stop offset='100%' stopColor='rgba(255, 255, 255, 0.15)' />
+          </linearGradient>
+
           <linearGradient id='nightGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-            <stop offset='0%' stopColor='rgba(100, 100, 150, 0.3)' />
-            <stop offset='50%' stopColor='rgba(150, 150, 200, 0.5)' />
-            <stop offset='100%' stopColor='rgba(100, 100, 150, 0.3)' />
+            <stop offset='0%' stopColor='rgba(148, 163, 184, 0.4)' />
+            <stop offset='50%' stopColor='rgba(203, 213, 225, 0.6)' />
+            <stop offset='100%' stopColor='rgba(148, 163, 184, 0.4)' />
           </linearGradient>
         </defs>
 
-        {/* Background arc */}
+        {/* Background arc - always visible */}
         <path
-          d='M 20 120 Q 140 0 260 120'
+          d='M 30 110 Q 140 10 250 110'
           fill='none'
           stroke={
-            isDaytime ? 'url(#nightGradient)' : 'rgba(100, 100, 150, 0.3)'
+            isDaytime ? 'url(#dayBackgroundGradient)' : 'url(#nightGradient)'
           }
-          strokeWidth='3'
-          strokeDasharray='8 4'
+          strokeWidth='4'
+          strokeLinecap='round'
         />
 
         {/* Progress arc (only during daytime) */}
         {isDaytime && (
           <path
-            d='M 20 120 Q 140 0 260 120'
+            d='M 30 110 Q 140 10 250 110'
             fill='none'
             stroke='url(#sunGradient)'
-            strokeWidth='3'
-            strokeDasharray={`${280 * t} ${280 * (1 - t)}`}
-            strokeDashoffset='0'
+            strokeWidth='4'
+            strokeLinecap='round'
+            strokeDasharray='280'
+            strokeDashoffset={280 - 280 * t}
           />
+        )}
+
+        {/* Sunrise and Sunset markers */}
+        <circle cx='30' cy='110' r='4' fill='white' opacity='0.8' />
+        <circle cx='250' cy='110' r='4' fill='white' opacity='0.8' />
+
+        {/* Time labels */}
+        {isDaytime && (
+          <>
+            <text
+              x='25'
+              y='105'
+              textAnchor='middle'
+              fill='white'
+              fontSize='10'
+              opacity='0.7'
+            >
+              Sun
+            </text>
+            <text
+              x='255'
+              y='105'
+              textAnchor='middle'
+              fill='white'
+              fontSize='10'
+              opacity='0.7'
+            >
+              Set
+            </text>
+          </>
         )}
       </svg>
 
+      {/* Sun/Moon Icon with enhanced visibility */}
       <SunIcon
         position={{
           top: `${y}px`,
           left: `${x}px`,
         }}
-        size='20px'
+        size={isNight ? '16px' : '22px'}
       />
+
+      {/* Current time indicator */}
+      {isDaytime && (
+        <Box
+          position='absolute'
+          top={`${Math.max(y - 30, 10)}px`}
+          left={`${x}px`}
+          transform='translateX(-50%)'
+          bg='blackAlpha.600'
+          color='white'
+          px={2}
+          py={1}
+          borderRadius='md'
+          fontSize='xs'
+          fontWeight='medium'
+          whiteSpace='nowrap'
+          zIndex={20}
+        >
+          {t < 0.5 ? 'Morning' : 'Afternoon'}
+        </Box>
+      )}
     </Box>
   );
 };

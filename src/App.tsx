@@ -12,9 +12,8 @@ export default function App() {
         bg='#0d0c22'
         p={6}
         direction={{ base: 'column', md: 'row' }}
-        border='2px solid red'
         gap={6}
-        h='100vh'
+        h='100%'
       >
         <Header />
 

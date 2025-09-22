@@ -406,7 +406,7 @@ export default function WeatherLocation() {
                             </Badge>
                           )}
                           {location.coordinates && (
-                            <Badge colorScheme='green' variant='outline'>
+                            <Badge colorScheme='whiteAlpha' variant='outline'>
                               GPS
                             </Badge>
                           )}
@@ -427,12 +427,11 @@ export default function WeatherLocation() {
                         icon={<Trash2 />}
                         size='sm'
                         variant='ghost'
-                        colorScheme='red'
+                        colorScheme='gray'
                         onClick={(e) => {
                           e.stopPropagation();
                           handleRemoveLocation(location.id);
                         }}
-                        _hover={{ bg: 'red.500', color: 'white' }}
                       />
                     </Flex>
                   </CardBody>

@@ -16,11 +16,16 @@ import Visisbility from '../components/Visisbility';
 import FeelLike from '../components/FeelLike';
 import WeatherMap from '../components/WeatherMap';
 import WeeklyForecast from '../components/WeeklyForecast';
-import CurrentWeather from '../components/CurrentWeather';
 import { useWeather } from '../hooks/useWeather';
 import Loader from '../components/LoadingSpinner';
-import { parentGradient, borderRadius, padding } from '../utils/styles';
+import {
+  parentGradient,
+  borderRadius,
+  padding,
+  componentTextStyles,
+} from '../utils/styles';
 import { useState } from 'react';
+import WeatherCard from '../components/WeatherCard';
 
 export default function Home() {
   //state
@@ -50,11 +55,9 @@ export default function Home() {
   }
 
   return (
-    <Stack spacing={6} border='2px solid yellow' flex={1}>
+    <Stack spacing={6} flex={1}>
       <Flex gap={6} direction={{ base: 'column', md: 'row' }}>
-        {current && (
-          <CurrentWeather data={current} handleSearch={handleSearch} />
-        )}
+        {current && <WeatherCard data={current} handleSearch={handleSearch} />}
         <SimpleGrid
           flex={1}
           bgGradient={parentGradient}
@@ -62,7 +65,9 @@ export default function Home() {
           p={padding}
           spacing={5}
         >
-          <Text>Today's Highlight</Text>
+          <Text color={componentTextStyles.cardTitle.color}>
+            Today's Highlight
+          </Text>
           <Flex gap={6} direction={{ base: 'column', md: 'row' }}>
             {current && <WindStatus data={current} />}
             {current && <UVindex {...uv} />}

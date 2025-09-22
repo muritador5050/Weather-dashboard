@@ -82,8 +82,6 @@ export default function WeatherMap({ data }: CurrentWeatherProps): JSX.Element {
   const weatherLayerRef = useRef<L.TileLayer | null>(null);
   const baseLayerRef = useRef<L.TileLayer | null>(null);
 
-  // const isMobile = useBreakpointValue({ base: true, md: false }) ?? true;
-
   // Initialize map only once
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
@@ -356,7 +354,6 @@ export default function WeatherMap({ data }: CurrentWeatherProps): JSX.Element {
 
   return (
     <Box
-      bgGradient={parentGradient}
       p={padding}
       borderRadius={borderRadius}
       flex={1}
@@ -374,6 +371,7 @@ export default function WeatherMap({ data }: CurrentWeatherProps): JSX.Element {
         bottom={0}
         zIndex={1}
         borderRadius={borderRadius}
+        bgGradient={parentGradient}
       />
 
       {/* Map Title */}
@@ -381,7 +379,7 @@ export default function WeatherMap({ data }: CurrentWeatherProps): JSX.Element {
         position='absolute'
         top={4}
         left='50%'
-        transform='translateX(-50%)'
+        transform={{ base: 'none', md: 'translateX(-50%)' }}
         zIndex={3}
         bg='rgba(255, 255, 255, 0.95)'
         px={4}
@@ -390,7 +388,7 @@ export default function WeatherMap({ data }: CurrentWeatherProps): JSX.Element {
         boxShadow='md'
       >
         <Text
-          fontSize='lg'
+          fontSize={{ base: 'sm', md: 'md' }}
           fontWeight='bold'
           textAlign='center'
           color='gray.800'
