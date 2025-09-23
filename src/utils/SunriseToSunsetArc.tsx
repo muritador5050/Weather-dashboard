@@ -32,45 +32,37 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
     />
   );
 
-  // Calculate current sun position
-  const calculateSunPosition = () => {
+  const calculateSunProgress = () => {
     const now = Math.floor(Date.now() / 1000);
     const adjustedNow = now + timezone;
     const sunriseTime = sunrise + timezone;
     const sunsetTime = sunset + timezone;
 
-    let t = 0.5; // Default to noon position
-
     if (adjustedNow >= sunriseTime && adjustedNow <= sunsetTime) {
       // Sun is up - calculate position between sunrise and sunset
       const dayDuration = sunsetTime - sunriseTime;
       const currentProgress = adjustedNow - sunriseTime;
-      t = currentProgress / dayDuration;
+      return currentProgress / dayDuration;
     } else if (adjustedNow < sunriseTime) {
-      // Before sunrise - sun at start position
-      t = 0;
+      // Before sunrise
+      return 0;
     } else {
-      // After sunset - sun at end position
-      t = 1;
+      // After sunset
+      return 1;
     }
-
-    // Ensure t is between 0 and 1
-    t = Math.max(0, Math.min(1, t));
-
-    return t;
   };
 
-  const t = calculateSunPosition();
+  const t = calculateSunProgress();
 
-  const angle = Math.PI * t;
-  const centerX = 140;
-  const centerY = 110;
-  const radius = 110;
+  const p0 = { x: 30, y: 110 };
+  const p1 = { x: 140, y: 10 };
+  const p2 = { x: 250, y: 110 };
 
-  const x = centerX - radius * Math.cos(angle);
-  const y = centerY - radius * Math.sin(angle);
+  const x =
+    Math.pow(1 - t, 2) * p0.x + 2 * (1 - t) * t * p1.x + Math.pow(t, 2) * p2.x;
+  const y =
+    Math.pow(1 - t, 2) * p0.y + 2 * (1 - t) * t * p1.y + Math.pow(t, 2) * p2.y;
 
-  // Determine if it's day or night for different styling
   const isDaytime = t > 0 && t < 1;
   const isNight = t === 0 || t === 1;
 
@@ -86,7 +78,6 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
       mx='auto'
       overflow='hidden'
     >
-      {/* Arc Path */}
       <svg
         width='100%'
         height='120'
@@ -99,9 +90,9 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
             <stop offset='25%' stopColor='#ffcc33' />
             <stop offset='50%' stopColor='#fff176' />
             <stop offset='75%' stopColor='#ffcc33' />
+
             <stop offset='100%' stopColor='rgba(255, 107, 53, 0.8)' />
           </linearGradient>
-
           <linearGradient
             id='dayBackgroundGradient'
             x1='0%'
@@ -110,18 +101,17 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
             y2='0%'
           >
             <stop offset='0%' stopColor='rgba(255, 255, 255, 0.15)' />
+
             <stop offset='50%' stopColor='rgba(255, 255, 255, 0.25)' />
+
             <stop offset='100%' stopColor='rgba(255, 255, 255, 0.15)' />
           </linearGradient>
-
           <linearGradient id='nightGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
             <stop offset='0%' stopColor='rgba(148, 163, 184, 0.4)' />
             <stop offset='50%' stopColor='rgba(203, 213, 225, 0.6)' />
             <stop offset='100%' stopColor='rgba(148, 163, 184, 0.4)' />
           </linearGradient>
         </defs>
-
-        {/* Background arc - always visible */}
         <path
           d='M 30 110 Q 140 10 250 110'
           fill='none'
@@ -131,8 +121,6 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
           strokeWidth='4'
           strokeLinecap='round'
         />
-
-        {/* Progress arc (only during daytime) */}
         {isDaytime && (
           <path
             d='M 30 110 Q 140 10 250 110'
@@ -144,39 +132,29 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
             strokeDashoffset={280 - 280 * t}
           />
         )}
-
-        {/* Sunrise and Sunset markers */}
         <circle cx='30' cy='110' r='4' fill='white' opacity='0.8' />
         <circle cx='250' cy='110' r='4' fill='white' opacity='0.8' />
-
-        {/* Time labels */}
-        {isDaytime && (
-          <>
-            <text
-              x='25'
-              y='105'
-              textAnchor='middle'
-              fill='white'
-              fontSize='10'
-              opacity='0.7'
-            >
-              Sun
-            </text>
-            <text
-              x='255'
-              y='105'
-              textAnchor='middle'
-              fill='white'
-              fontSize='10'
-              opacity='0.7'
-            >
-              Set
-            </text>
-          </>
-        )}
+        <text
+          x='25'
+          y='105'
+          textAnchor='middle'
+          fill='white'
+          fontSize='10'
+          opacity='0.7'
+        >
+          Sun
+        </text>{' '}
+        <text
+          x='255'
+          y='105'
+          textAnchor='middle'
+          fill='white'
+          fontSize='10'
+          opacity='0.7'
+        >
+          Set
+        </text>
       </svg>
-
-      {/* Sun/Moon Icon with enhanced visibility */}
       <SunIcon
         position={{
           top: `${y}px`,
@@ -184,8 +162,6 @@ const SunriseToSunsetArc: React.FC<SunriseToSunsetArcProps> = ({
         }}
         size={isNight ? '16px' : '22px'}
       />
-
-      {/* Current time indicator */}
       {isDaytime && (
         <Box
           position='absolute'
