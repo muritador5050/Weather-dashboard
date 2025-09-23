@@ -7,6 +7,10 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      devOptions: {
+        enabled: true,
+        type: 'module',
+      },
       manifest: {
         name: 'MeteoMetric',
         short_name: 'MeteoMetric',
