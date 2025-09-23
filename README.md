@@ -4,10 +4,6 @@
 
 A modern, responsive weather monitoring application built with React, TypeScript, and Chakra UI. Features real-time weather data, interactive charts, air quality monitoring, and multi-location tracking.
 
-![Weather Dashboard Preview](https://img.shields.io/badge/Status-Portfolio%20Ready-brightgreen)
-![React](https://img.shields.io/badge/React-18.2.0-blue)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0.2-blue)
-![Vite](https://img.shields.io/badge/Vite-4.5.3-646CFF)
 
 ## ✨ Features
 
